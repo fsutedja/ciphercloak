@@ -75,11 +75,84 @@ def affine_decrypt(text, a, b, preserve_case=True):
     else:
         raise ValueError("Invalid key. 'a' must be relatively prime to 26.")
 
+def vigenere_encrypt(text, key, preserve_case=True):
+    result = ""
+
+    #key must only have letters
+    key_index = 0
+    clean_key = ""
+    for char in key:
+        if char.isalpha():
+            clean_key += char.lower()
+    if clean_key == "":
+        raise ValueError("Key must contain at least one letter!")
+
+    for char in text:
+        if char.isalpha():
+            if preserve_case:
+                if char.isupper():
+                    offset = ord('A') #ascii of 'A'
+                else:
+                    offset = ord('a') #ascii of 'a'
+            else:
+                char=char.lower()
+                offset = ord('a')
+            
+            key_char = clean_key[key_index%len(clean_key)] #char that determines shift value
+            shift = ord(key_char) - ord('a')
+
+            p = ord(char) - offset
+            encrypted = (p+shift)%26
+            result += chr(encrypted+offset)
+
+            key_index+=1
+        else:
+            result += char
+    
+    return result
+
+def vigenere_decrypt(text, key, preserve_case=True):
+    result = ""
+
+    #key must only have letters
+    key_index = 0
+    clean_key = ""
+    for char in key:
+        if char.isalpha():
+            clean_key += char.lower()
+    if clean_key == "":
+        raise ValueError("Key must contain at least one letter!")
+
+    for char in text:
+        if char.isalpha():
+            if preserve_case:
+                if char.isupper():
+                    offset = ord('A') #ascii of 'A'
+                else:
+                    offset = ord('a') #ascii of 'a'
+            else:
+                char=char.lower()
+                offset = ord('a')
+            
+            key_char = clean_key[key_index%len(clean_key)] #char that determines shift value
+            shift = ord(key_char) - ord('a')
+
+            p = ord(char) - offset
+            decrypted = (p-shift)%26
+            result += chr(decrypted+offset)
+
+            key_index+=1
+        else:
+            result += char
+    
+    return result
+
 #run test block if file is run manually
 if __name__ == "__main__":
     print(caesar_encrypt("Hello", 3, True))
     print(caesar_decrypt("Khoor", 3, True))
     print(affine_encrypt("HELLO", 5, 8, True))
     print(affine_decrypt("RCLLA", 5, 8, True))
+    print(vigenere_encrypt("ATTACKATDAWN", "LEMON", True))
+    print(vigenere_decrypt("LXFOPVEFRNHR", "LEMON", True))
 
-    
