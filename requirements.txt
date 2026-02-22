@@ -1,0 +1,3 @@
+fastapi #web requests
+uvicorn #run server
+jinja2 #renders html

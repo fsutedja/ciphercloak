@@ -82,3 +82,4 @@ if __name__ == "__main__":
     print(affine_encrypt("HELLO", 5, 8, True))
     print(affine_decrypt("RCLLA", 5, 8, True))
 
+    
